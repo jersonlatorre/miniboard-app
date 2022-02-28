@@ -42,8 +42,8 @@ const macOS = {
 }
 
 module.exports = {
-  productName: 'bsod-app',
-  appId: 'com.bsod.app',
+  productName: 'Miniboard',
+  appId: 'com.miniboard.app',
   artifactName: 'setup-${version}.${ext}',
   directories: {
     output: 'build'

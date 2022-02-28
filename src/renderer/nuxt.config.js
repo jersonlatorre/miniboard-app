@@ -2,7 +2,7 @@ module.exports = {
   ssr: false,
   target: 'static',
   head: {
-    title: 'Whiteboard',
+    title: 'Miniboard',
     meta: [ { charset: 'utf-8' } ]
   },
   loading: false,

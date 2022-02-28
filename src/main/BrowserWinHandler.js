@@ -51,7 +51,7 @@ export default class BrowserWinHandler {
       this.browserWindow = null
     })
 
-    this.browserWindow.webContents.openDevTools()
+    // this.browserWindow.webContents.openDevTools()
     this._eventEmitter.emit('created')
   }
 

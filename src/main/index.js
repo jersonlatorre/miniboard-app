@@ -3,8 +3,8 @@ import { ipcMain } from 'electron'
 import BrowserWinHandler from './BrowserWinHandler'
 
 const winHandler = new BrowserWinHandler({
-  width: 500,
-  height: 800
+  width: 800,
+  height: 600
   // resizable: false,
   // maximizable: false
 })
