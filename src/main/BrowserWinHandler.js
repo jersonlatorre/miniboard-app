@@ -47,11 +47,11 @@ export default class BrowserWinHandler {
             }
         })
         this.browserWindow.on('closed', () => {
-            // Dereference the window object
             this.browserWindow = null
         })
 
-        this.browserWindow.webContents.openDevTools()
+        // show / hide dev tools
+        // this.browserWindow.webContents.openDevTools()
         this._eventEmitter.emit('created')
     }
 
