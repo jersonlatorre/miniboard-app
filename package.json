@@ -36,6 +36,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
+    "curve-interpolator": "^2.0.8",
     "hotkeys-js": "^3.8.7",
     "p5": "^1.4.1",
     "pressure": "^2.2.0",

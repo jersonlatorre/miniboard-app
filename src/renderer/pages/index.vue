@@ -314,62 +314,62 @@ export default {
   background-color: black
   overflow: hidden
 
-  #canvas
-    position: absolute
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    cursor: none
+#canvas
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  cursor: none
 
-  #buttons
-    position: absolute
-    left: 50%
-    bottom: 6px
-    border-radius: 23px
-    transform: translateX(-50%)
-    text-align: center
-    padding: 3px
-    background-color: rgba(255, 255, 255, 0.12)
+#buttons
+  position: absolute
+  left: 50%
+  bottom: 6px
+  border-radius: 23px
+  transform: translateX(-50%)
+  text-align: center
+  padding: 3px
+  background-color: rgba(255, 255, 255, 0.12)
 
-    .container
-      display: flex
-      justify-content: space-between
-      align-content: center
+  .container
+    display: flex
+    justify-content: space-between
+    align-content: center
 
-      .button
-        width: 20px
-        height: 20px
-        margin: 4px
-        border-radius: 50%
-        cursor: pointer
-        transition: all 0.2s ease-in-out
-        position: relative
+  .button
+    width: 20px
+    height: 20px
+    margin: 4px
+    border-radius: 50%
+    cursor: pointer
+    transition: all 0.2s ease-in-out
+    position: relative
 
-      .selected
-        transform: scale(1.2)
-        transition: all 0.08s ease-out
+  .selected
+    transform: scale(1.2)
+    transition: all 0.08s ease-out
 
-      .button:hover
-        transform: scale(1.15)
-        transition: all 0.08s ease-out
+  .button:hover
+    transform: scale(1.15)
+    transition: all 0.08s ease-out
 
-      .button:active
-        transform: scale(1.1)
-        transition: all 0.08s ease-out
+  .button:active
+    transform: scale(1.1)
+    transition: all 0.08s ease-out
 
-      .red
-        background-color: red
-      .blue
-        background-color: #0030FF
-      .yellow
-        background-color: gold
-      .white
-        background-color: white
-      .eraser
-        background-color: #ccc
-        background-image: url(~/assets/images/eraser.svg)
-        background-repeat: no-repeat
-        background-position: center
-        background-size: 16px 16px
+  .red
+    background-color: red
+  .blue
+    background-color: #0030FF
+  .yellow
+    background-color: gold
+  .white
+    background-color: white
+  .eraser
+    background-color: #ccc
+    background-image: url(~/assets/images/eraser.svg)
+    background-repeat: no-repeat
+    background-position: center
+    background-size: 16px 16px
 </style>
