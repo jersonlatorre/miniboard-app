@@ -299,6 +299,19 @@ export default {
         }
       })
 
+      document.querySelector('#canvas').addEventListener('mouseleave', (e) => {
+        console.log('leaveeee')
+        // click central
+        if (this.isMiddleMouseDown) {
+          this.isMiddleMouseDown = false
+        }
+
+        // click derecho
+        if (this.isRightMouseDown) {
+          this.isRightMouseDown = false
+        }
+      })
+
       p.windowResized = () => {
         p.resizeCanvas(p.windowWidth, p.windowHeight)
       }
