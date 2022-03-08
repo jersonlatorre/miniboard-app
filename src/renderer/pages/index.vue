@@ -34,7 +34,8 @@ import { Point, Line } from '../plugins/geometry'
 export default {
   data() {
     return {
-      colors: ['white', 'gold', 'red', '#0030FF'],
+      colors: ['white', 'gold', '#FF8BF6', '#1360FF'],
+      // colors: ['white', 'gold', 'red', '#0030FF'],
       pressure: 0,
       currentColor: 'white',
       backgroundColor: 'black',
@@ -300,7 +301,6 @@ export default {
       })
 
       document.querySelector('#canvas').addEventListener('mouseleave', (e) => {
-        console.log('leaveeee')
         // click central
         if (this.isMiddleMouseDown) {
           this.isMiddleMouseDown = false
@@ -372,9 +372,9 @@ export default {
     transition: all 0.08s ease-out
 
   .red
-    background-color: red
+    background-color: #FF8BF6
   .blue
-    background-color: #0030FF
+    background-color: #1360FF
   .yellow
     background-color: gold
   .white
