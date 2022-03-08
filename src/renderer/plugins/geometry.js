@@ -13,7 +13,6 @@ export class Line {
 		this.points = []
 		this.interpolatedPoints = []
 		this.sizes = []
-		this.interpolatedSizes = []
 		this.color = color
 	}
 
