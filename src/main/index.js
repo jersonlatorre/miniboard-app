@@ -1,11 +1,11 @@
 import { app } from 'electron'
-import { ipcMain } from 'electron'
 import BrowserWinHandler from './BrowserWinHandler'
 
 const winHandler = new BrowserWinHandler({
 	width: 800,
 	height: 600,
 	autoHideMenuBar: true,
+  backgroundColor: '#000'
 })
 
 winHandler.onCreated((browserWindow) => {
