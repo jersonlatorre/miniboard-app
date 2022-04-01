@@ -1,8 +1,9 @@
 node_modules
 .nuxt
 dist
-build
 src/renderer/.nuxt
 src/renderer/node_modules
 **/.DS_Store
 .DS_Store
+Icon
+build/builder-debug.yml
