@@ -31,11 +31,12 @@ import Pressure from 'pressure'
 import hotkeys from 'hotkeys-js'
 import { Point, Line } from '../plugins/geometry'
 
+const ERASER_SIZE = 25
+
 export default {
   data() {
     return {
       colors: ['white', 'gold', '#FF8BF6', '#1360FF'],
-      // colors: ['white', 'gold', 'red', '#0030FF'],
       pressure: 0,
       currentColor: 'white',
       backgroundColor: 'black',
@@ -58,6 +59,7 @@ export default {
       return this.state == 'eraser' || this.state == 'pre-eraser'
     },
   },
+
   methods: {
     onWheel(e) {
       this.cameraX += e.deltaX * this.cameraZoom
@@ -223,7 +225,7 @@ export default {
         let worldX = this.cameraX + p.mouseX * this.cameraZoom
         let worldY = this.cameraY + p.mouseY * this.cameraZoom
 
-        this.currentLine.addPoint(new Point(worldX, worldY, 15))
+        this.currentLine.addPoint(new Point(worldX, worldY, ERASER_SIZE))
         this.currentLine.draw(p, this.cameraX, this.cameraY, this.cameraZoom)
 
         p.drawCursorEraser()
@@ -245,7 +247,7 @@ export default {
         p.stroke('white')
         p.strokeWeight(1)
         p.fill(this.backgroundColor)
-        p.circle(p.mouseX, p.mouseY, 15)
+        p.circle(p.mouseX, p.mouseY, ERASER_SIZE)
       }
 
       document.querySelector('#canvas').addEventListener('mousedown', (e) => {
