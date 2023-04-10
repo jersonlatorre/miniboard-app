@@ -1,6 +1,7 @@
 node_modules
 .nuxt
 dist
+.DS_Store
 build
 src/renderer/.nuxt
 src/renderer/node_modules
