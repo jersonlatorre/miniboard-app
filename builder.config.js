@@ -60,12 +60,6 @@ module.exports = {
       to: 'dist/renderer/'
     }
   ],
-  extraResources: [
-    {
-      from: 'src/extraResources/',
-      to: ''
-    }
-  ],
   ...windowsOS,
   ...linuxOS,
   ...macOS
