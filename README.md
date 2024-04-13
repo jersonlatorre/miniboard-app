@@ -32,10 +32,10 @@ Contributions are what make the open-source community such an amazing place to l
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License..
 
 ## Contact
 
-Your Name - [Your Email](jerson.latorre@gmail.com)
+Jerson La Torre - [jerson.latorre@gmail.com](jerson.latorre@gmail.com)
 
 Project Link: [https://github.com/jersonlatorre/miniboard-app](https://github.com/jersonlatorre/miniboard-app)
