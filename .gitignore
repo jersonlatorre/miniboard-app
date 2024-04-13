@@ -1,11 +1,24 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
 node_modules
-.nuxt
 dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-build
-src/renderer/.nuxt
-src/renderer/node_modules
-**/.DS_Store
-.DS_Store
-Icon
-build/builder-debug.yml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
