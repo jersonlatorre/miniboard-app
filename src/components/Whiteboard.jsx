@@ -109,19 +109,18 @@ export default function Whiteboard() {
       })
 
       canvas.mouseMoved(() => {
-        
         // handle zoom
         if (p.mouseButton === p.RIGHT && zoomCenter) {
           const zoomIntensity = 0.005
           let newZoom = zoom + (p.mouseY - prevMouseY) * zoomIntensity
           newZoom = p.constrain(newZoom, 0.1, 5)
-          
+
           const zoomPointX = (zoomCenter.x - p.width / 2 + offsetX) / zoom
           const zoomPointY = (zoomCenter.y - p.height / 2 + offsetY) / zoom
-          
+
           offsetX -= zoomPointX * newZoom - zoomPointX * zoom
           offsetY -= zoomPointY * newZoom - zoomPointY * zoom
-          
+
           zoom = newZoom
           prevMouseY = p.mouseY
           return false
@@ -198,9 +197,9 @@ export default function Whiteboard() {
       brushSize = newBrushSize
     }
 
-    // p.windowResized = () => {
-    //   p.resizeCanvas(p.windowWidth, p.windowHeight)
-    // }
+    p.windowResized = () => {
+      p.resizeCanvas(p.windowWidth, p.windowHeight)
+    }
   }
 
   useEffect(() => {
