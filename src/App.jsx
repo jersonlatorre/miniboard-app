@@ -5,9 +5,6 @@ import Whiteboard from './components/Whiteboard'
 import { WorkspaceProvider } from './contexts/WorkspaceContext'
 
 export default function App() {
-  document.addEventListener('contextmenu', function (event) {
-    event.preventDefault()
-  })
   document.addEventListener(
     'wheel',
     function (e) {

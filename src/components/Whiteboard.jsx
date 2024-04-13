@@ -79,15 +79,21 @@ export default function Whiteboard() {
     let dragging = false
     let zoomCenter = null
     let canvas
+    let prevMouseY = 0
 
     p.setup = () => {
       canvas = p.createCanvas(p.windowWidth, p.windowHeight).parent('whiteboard')
+
+      canvas.elt.addEventListener('contextmenu', function (e) {
+        e.preventDefault()
+      })
 
       // handle mouse events on canvas
       canvas.mousePressed(() => {
         // zoom origin
         if (p.mouseButton === p.RIGHT) {
           zoomCenter = { x: p.mouseX, y: p.mouseY }
+          prevMouseY = p.mouseY
           return false
         }
 
@@ -103,20 +109,21 @@ export default function Whiteboard() {
       })
 
       canvas.mouseMoved(() => {
+        
         // handle zoom
         if (p.mouseButton === p.RIGHT && zoomCenter) {
           const zoomIntensity = 0.005
-          let newZoom = zoom + (p.mouseY - p.pmouseY) * zoomIntensity
+          let newZoom = zoom + (p.mouseY - prevMouseY) * zoomIntensity
           newZoom = p.constrain(newZoom, 0.1, 5)
-
+          
           const zoomPointX = (zoomCenter.x - p.width / 2 + offsetX) / zoom
           const zoomPointY = (zoomCenter.y - p.height / 2 + offsetY) / zoom
-
+          
           offsetX -= zoomPointX * newZoom - zoomPointX * zoom
           offsetY -= zoomPointY * newZoom - zoomPointY * zoom
-
+          
           zoom = newZoom
-
+          prevMouseY = p.mouseY
           return false
         }
 
@@ -191,9 +198,9 @@ export default function Whiteboard() {
       brushSize = newBrushSize
     }
 
-    p.windowResized = () => {
-      p.resizeCanvas(p.windowWidth, p.windowHeight)
-    }
+    // p.windowResized = () => {
+    //   p.resizeCanvas(p.windowWidth, p.windowHeight)
+    // }
   }
 
   useEffect(() => {
