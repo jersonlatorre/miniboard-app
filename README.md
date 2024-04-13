@@ -2,6 +2,8 @@
 
 Welcome to Miniboard, a minimalist infinite canvas web app designed for teaching, note-taking, and quick explanations. Miniboard provides a seamless experience for scrolling, zooming, and brush color customization, making it an ideal tool for educators, professionals, and anyone in need of a straightforward, no-frills digital canvas.
 
+<img src="https://p.ipic.vip/1udrpj.png" alt="miniboard" style="zoom:50%;" />
+
 ## Features
 
 - **Infinite Canvas:** Scroll endlessly in any direction to expand your workspace as needed.
