@@ -194,6 +194,14 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@p5-wrapper/react@^4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@p5-wrapper/react/-/react-4.4.0.tgz#a522661d2ced4f21578c5b08109b070335bf90ed"
+  integrity sha512-4s6KEVb0of3s959tmmQ0Xc77v8Y1ZDw6sbjKR+E8Qdn5oLMfat7Wah5Az9Cs2AzljK3HQcz7WFhel5qBTKJyuQ==
+  dependencies:
+    microdiff "^1.4.0"
+    p5 ">=1.4.1 <2.0.0"
+
 "@rollup/rollup-android-arm-eabi@4.14.1":
   version "4.14.1"
   resolved "https://registry.yarnpkg.com/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.14.1.tgz#ca0501dd836894216cb9572848c5dde4bfca3bec"
@@ -1493,6 +1501,11 @@ loose-envify@^1.1.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
+microdiff@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/microdiff/-/microdiff-1.4.0.tgz#d7fd98a6db602cd8d3ab4463ed7c0340ff9a6f2c"
+  integrity sha512-OBKBOa1VBznvLPb/3ljeJaENVe0fO0lnWl77lR4vhPlQD71UpjEoRV5P0KdQkcjbFlBu1Oy2mEUBMU3wxcBAGg==
+
 minimatch@^3.0.5, minimatch@^3.1.1, minimatch@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.2.tgz#19cd194bfd3e428f049a70817c038d89ab4be35b"
@@ -1615,7 +1628,7 @@ p-locate@^5.0.0:
   dependencies:
     p-limit "^3.0.2"
 
-p5@^1.9.2:
+"p5@>=1.4.1 <2.0.0":
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/p5/-/p5-1.9.2.tgz#34f9fa4b2d72aa8bc23c1efd7ffc97831f8145bd"
   integrity sha512-fV8Td9Q1qlYXRXPLNrclRsgzXxPp/EuDlJUteV1XEtsy0JwjjCVteCrv7TTCU71BSoEtmuQ/51BIVRUJi/0gEw==

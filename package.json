@@ -11,8 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@p5-wrapper/react": "^4.4.0",
     "hotkeys-js": "^3.13.7",
-    "p5": "^1.9.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
