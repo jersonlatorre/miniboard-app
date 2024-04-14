@@ -32,6 +32,10 @@ export const sketch = (p) => {
   p.setup = () => {
     canvas = p.createCanvas(p.windowWidth, p.windowHeight).parent('whiteboard')
     canvas.elt.addEventListener('contextmenu', (e) => e.preventDefault())
+    canvas.elt.addEventListener('blur', () => {
+      panning = false
+      zoomCenter = null
+    })
 
     hotkeys('command+z, ctrl+z', undo)
     hotkeys('command+shift+z, ctrl+shift+z', redo)
@@ -75,8 +79,10 @@ export const sketch = (p) => {
     }
 
     // create new line
-    currentLine = new Line(brushColor, brushSize)
-    currentLine.addPoint((p.mouseX - p.width / 2) / zoom + p.width / 2 - offsetX, (p.mouseY - p.height / 2) / zoom + p.height / 2 - offsetY)
+    if (!panning && !zoomCenter) {
+      currentLine = new Line(brushColor, brushSize)
+      currentLine.addPoint((p.mouseX - p.width / 2) / zoom + p.width / 2 - offsetX, (p.mouseY - p.height / 2) / zoom + p.height / 2 - offsetY)
+    }
   }
 
   const handleMouseMoved = () => {
@@ -107,12 +113,15 @@ export const sketch = (p) => {
     }
 
     // add point
-    if (currentLine) {
+    if (currentLine && !panning && !zoomCenter) {
       currentLine.addPoint((p.mouseX - p.width / 2) / zoom + p.width / 2 - offsetX, (p.mouseY - p.height / 2) / zoom + p.height / 2 - offsetY)
     }
   }
 
   const handleMouseReleased = () => {
+    panning = false
+    zoomCenter = null
+
     // stop zoom
     if (p.mouseButton === p.RIGHT) {
       zoomCenter = null
