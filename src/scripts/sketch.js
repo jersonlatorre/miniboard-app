@@ -104,13 +104,8 @@ export const sketch = (p) => {
   }
 
   const handleMouseWheel = (event) => {
-    // Evita el comportamiento predeterminado del navegador
     event.preventDefault()
-
-    // Configura la intensidad del paneo
-    const panIntensity = 5
-
-    // Calcula el desplazamiento basado en la dirección del scroll
+    const panIntensity = 2
     transform.x -= event.deltaX * panIntensity
     transform.y -= event.deltaY * panIntensity
   }
