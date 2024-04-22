@@ -9,7 +9,7 @@ export default function Whiteboard() {
   const { brushColor, eraserColor } = useContext(WorkspaceContext)
 
   return (
-    <div id="whiteboard">
+    <div id="whiteboard" style={{ backgroundColor: '#111' }}>
       <ReactP5Wrapper sketch={sketch} brushColor={brushColor} eraserColor={eraserColor} />
     </div>
   )
