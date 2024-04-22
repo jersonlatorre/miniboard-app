@@ -77,7 +77,7 @@ export const sketch = (p) => {
       const zoomIntensity = 0.01
 
       let newScale = transform.scale + dy * zoomIntensity
-      newScale = Math.max(0.2, Math.min(5, newScale))
+      newScale = Math.max(0.1, Math.min(5, newScale))
       const scaleFactor = newScale / transform.scale
 
       transform.x = p.mouseX - scaleFactor * (p.mouseX - transform.x)
