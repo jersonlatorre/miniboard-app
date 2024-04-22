@@ -12,7 +12,7 @@ Welcome to Miniboard, a minimalist infinite canvas web app designed for teaching
 
 ## Getting Started
 
-To start using Miniboard, simply visit [Miniboard](https://miniboard.surge.sh) and begin drawing or writing immediately. No setup required.
+To start using Miniboard, simply visit [Miniboard](https://miniboard.vercel.app) and begin drawing or writing immediately. No setup required.
 
 Miniboard runs in any modern web browser. Ensure your browser is up to date for the best performance.
 
