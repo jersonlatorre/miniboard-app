@@ -29,12 +29,19 @@ export const sketch = (p) => {
   // Funciones
   const undo = (e) => {
     e.preventDefault()
-    if (lines.length > 0) deletedLines.push(lines.pop())
+    if (lines.length > 0) {
+      const lastLine = lines.pop()
+      deletedLines.push(lastLine)
+      currentLine = null // Asegura que no se continúe dibujando la línea eliminada
+    }
   }
 
   const redo = (e) => {
     e.preventDefault()
-    if (deletedLines.length > 0) lines.push(deletedLines.pop())
+    if (deletedLines.length > 0) {
+      const restoredLine = deletedLines.pop()
+      lines.push(restoredLine)
+    }
   }
 
   const getMousePosition = () => {
@@ -49,6 +56,7 @@ export const sketch = (p) => {
         currentLine = new Line(config.brushColor, config.brushSize)
         currentLine.addPoint(mousePos.x, mousePos.y)
         lines.push(currentLine)
+        deletedLines = []
         break
       case 1: // Middle button
         state = 'pan'
@@ -144,5 +152,53 @@ export const sketch = (p) => {
       config.brushColor = props.brushColor
       config.brushSize = config.brushColor === config.backgroundColor ? 20 : 3
     }
+  }
+
+  p.keyPressed = () => {
+    if (p.key === 'd') downloadAsPNG()
+  }
+
+  const calculateBounds = () => {
+    let minX = Infinity
+    let minY = Infinity
+    let maxX = -Infinity
+    let maxY = -Infinity
+
+    lines.forEach((line) => {
+      line.points.forEach((point) => {
+        if (point.x < minX) minX = point.x
+        if (point.y < minY) minY = point.y
+        if (point.x > maxX) maxX = point.x
+        if (point.y > maxY) maxY = point.y
+      })
+    })
+
+    return { minX, minY, maxX, maxY }
+  }
+
+  const downloadAsPNG = () => {
+    const { minX, minY, maxX, maxY } = calculateBounds()
+    const width = maxX - minX + 200
+    const height = maxY - minY + 200
+
+    let offscreenGraphics = p.createGraphics(width, height)
+    offscreenGraphics.background(config.backgroundColor)
+
+    lines.forEach((line) => {
+      const adjustedPoints = line.points.map((point) => ({
+        x: point.x - minX + 100,
+        y: point.y - minY + 100,
+      }))
+      offscreenGraphics.stroke(line.color)
+      offscreenGraphics.strokeWeight(line.size)
+      offscreenGraphics.noFill()
+      offscreenGraphics.beginShape()
+      adjustedPoints.forEach((point) => {
+        offscreenGraphics.vertex(point.x, point.y)
+      })
+      offscreenGraphics.endShape()
+    })
+
+    offscreenGraphics.save('dibujo_completo.png')
   }
 }
