@@ -82,15 +82,20 @@ export const sketch = (p) => {
       panStartY = p.mouseY
     } else if (state === 'zoom' && p.mouseIsPressed) {
       const dy = p.mouseY - zoomStartY
-      const zoomIntensity = 0.01
+      const zoomIntensity = 0.005
+      const zoomFactor = Math.exp(-dy * zoomIntensity)
 
-      let newScale = transform.scale + dy * zoomIntensity
-      newScale = Math.max(0.1, Math.min(5, newScale))
-      const scaleFactor = newScale / transform.scale
+      const mouseX = (p.mouseX - transform.x) / transform.scale
+      const mouseY = (p.mouseY - transform.y) / transform.scale
 
-      transform.x = p.mouseX - scaleFactor * (p.mouseX - transform.x)
-      transform.y = p.mouseY - scaleFactor * (p.mouseY - transform.y)
+      // Aplicar límites al zoom
+      const minZoom = 0.1
+      const maxZoom = 5
+      const newScale = p.constrain(transform.scale * zoomFactor, minZoom, maxZoom)
+
       transform.scale = newScale
+      transform.x = p.mouseX - mouseX * transform.scale
+      transform.y = p.mouseY - mouseY * transform.scale
 
       zoomStartY = p.mouseY
     } else if (state === 'draw' && currentLine) {
@@ -128,11 +133,14 @@ export const sketch = (p) => {
   p.draw = () => {
     p.background(config.backgroundColor)
 
+    p.push()
     p.translate(transform.x, transform.y)
     p.scale(transform.scale)
 
     lines.forEach((line) => line.draw(p))
     if (currentLine) currentLine.draw(p)
+
+    p.pop()
   }
 
   // Resize
@@ -151,6 +159,7 @@ export const sketch = (p) => {
 
   p.keyPressed = () => {
     if (p.key === 'd') downloadAsPNG()
+    if (p.key === 'c') clearCanvas()
   }
 
   const calculateBounds = () => {
@@ -179,21 +188,19 @@ export const sketch = (p) => {
     let offscreenGraphics = p.createGraphics(width, height)
     offscreenGraphics.background(config.backgroundColor)
 
-    lines.forEach((line) => {
-      const adjustedPoints = line.points.map((point) => ({
-        x: point.x - minX + 100,
-        y: point.y - minY + 100,
-      }))
-      offscreenGraphics.stroke(line.color)
-      offscreenGraphics.strokeWeight(line.size)
-      offscreenGraphics.noFill()
-      offscreenGraphics.beginShape()
-      adjustedPoints.forEach((point) => {
-        offscreenGraphics.vertex(point.x, point.y)
-      })
-      offscreenGraphics.endShape()
-    })
+    offscreenGraphics.push()
+    offscreenGraphics.translate(-minX + 100, -minY + 100)
+
+    lines.forEach((line) => line.draw(offscreenGraphics))
+
+    offscreenGraphics.pop()
 
     offscreenGraphics.save('dibujo_completo.png')
+  }
+
+  const clearCanvas = () => {
+    lines = []
+    deletedLines = []
+    currentLine = null
   }
 }

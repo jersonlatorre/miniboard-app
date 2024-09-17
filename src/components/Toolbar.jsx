@@ -10,14 +10,26 @@ export default function Toolbar() {
     e.stopPropagation()
     setBrushColor(color)
   }
-  
+
   return (
     <ul id="toolbar">
-      <li className={'button' + (brushColor === mainColor ? ' selected' : '')} style={{ backgroundColor: mainColor }} onClick={(e) => handleClick(e, mainColor)}></li>
+      <li
+        className={'button' + (brushColor === mainColor ? ' selected' : '')}
+        style={{ backgroundColor: mainColor }}
+        onClick={(e) => handleClick(e, mainColor)}
+      ></li>
       {colors.map((color) => (
-        <li className={'button' + (brushColor === color ? ' selected' : '')} key={color} style={{ backgroundColor: color }} onClick={(e) => handleClick(e, color)}></li>
+        <li
+          className={'button' + (brushColor === color ? ' selected' : '')}
+          key={color}
+          style={{ backgroundColor: color }}
+          onClick={(e) => handleClick(e, color)}
+        ></li>
       ))}
-      <li className={'eraser' + (brushColor === eraserColor ? ' selected' : '')} onClick={(e) => handleClick(e, eraserColor)}></li>
+      <li
+        className={'eraser' + (brushColor === eraserColor ? ' selected' : '')}
+        onClick={(e) => handleClick(e, eraserColor)}
+      ></li>
     </ul>
   )
 }

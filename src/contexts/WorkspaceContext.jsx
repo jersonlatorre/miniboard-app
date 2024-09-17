@@ -12,7 +12,20 @@ export const WorkspaceProvider = ({ children }) => {
   const [brushColor, setBrushColor] = useState(mainColor)
 
   return (
-    <WorkspaceContext.Provider value={{ colors, brushColor, eraserColor, mainColor, theme, setColors, setBrushColor, setEraserColor, setMainColor, setTheme }}>
+    <WorkspaceContext.Provider
+      value={{
+        colors,
+        brushColor,
+        eraserColor,
+        mainColor,
+        theme,
+        setColors,
+        setBrushColor,
+        setEraserColor,
+        setMainColor,
+        setTheme,
+      }}
+    >
       {children}
     </WorkspaceContext.Provider>
   )
