@@ -1,13 +1,13 @@
 import { createContext, useState } from 'react'
 
+import PropTypes from 'prop-types'
+
 export const WorkspaceContext = createContext()
 
-// eslint-disable-next-line react/prop-types
 export const WorkspaceProvider = ({ children }) => {
   const [mainColor, setMainColor] = useState('#FFFFFF')
   const [eraserColor, setEraserColor] = useState('#111111')
   const [theme, setTheme] = useState('dark')
-  // const [colors, setColors] = useState(['#FFD54B', '#FF8BF6', '#02AFFF'])
   const [colors, setColors] = useState(['#FFD602', '#FF6AC1', '#1360FF'])
   const [brushColor, setBrushColor] = useState(mainColor)
 
@@ -29,4 +29,8 @@ export const WorkspaceProvider = ({ children }) => {
       {children}
     </WorkspaceContext.Provider>
   )
+}
+
+WorkspaceProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 }
