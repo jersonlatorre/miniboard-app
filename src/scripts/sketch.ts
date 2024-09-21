@@ -1,69 +1,93 @@
 import Line from './line'
 import hotkeys from 'hotkeys-js'
+import p5 from 'p5'
 
-export const sketch = (p) => {
-  // Configuración
-  const config = {
+interface Config {
+  backgroundColor: string
+  brushSize: number
+  brushColor: string
+  eraserColor: string
+}
+
+interface Transform {
+  x: number
+  y: number
+  scale: number
+}
+
+interface Bounds {
+  minX: number
+  minY: number
+  maxX: number
+  maxY: number
+}
+
+declare module 'p5' {
+  interface p5InstanceExtensions {
+    updateWithProps: (props: Partial<Config>) => void
+  }
+}
+
+export const sketch = (p: p5) => {
+  const config: Config = {
     backgroundColor: '#111',
     brushSize: 3,
     brushColor: '#fff',
+    eraserColor: '#111',
   }
 
-  // Estado
-  let state = 'none' // 'draw', 'zoom', 'pan'
-  let currentLine
-  let lines = []
-  let deletedLines = []
+  let state: 'none' | 'draw' | 'zoom' | 'pan' = 'none'
+  let currentLine: Line | null = null
+  let lines: Line[] = []
+  let deletedLines: Line[] = []
   let panStartX = 0
   let panStartY = 0
   let zoomStartY = 0
 
-  // Canvas
-  let canvas
-  let transform = {
+  let canvas: p5.Renderer
+  const transform: Transform = {
     x: 0,
     y: 0,
     scale: 1,
   }
 
-  // Funciones
-  const undo = (e) => {
+  const undo = (e: KeyboardEvent) => {
     e.preventDefault()
     if (lines.length > 0) {
       const lastLine = lines.pop()
-      deletedLines.push(lastLine)
-      currentLine = null // Asegura que no se continúe dibujando la línea eliminada
+      if (lastLine) deletedLines.push(lastLine)
+      currentLine = null
     }
   }
 
-  const redo = (e) => {
+  const redo = (e: KeyboardEvent) => {
     e.preventDefault()
     if (deletedLines.length > 0) {
       const restoredLine = deletedLines.pop()
-      lines.push(restoredLine)
+      if (restoredLine) lines.push(restoredLine)
     }
   }
 
-  const getMousePosition = () => {
+  const getMousePosition = (): p5.Vector => {
     return p.createVector((p.mouseX - transform.x) / transform.scale, (p.mouseY - transform.y) / transform.scale)
   }
 
-  const handleMousePressed = (event) => {
+  const handleMousePressed = (event: MouseEvent) => {
     const mousePos = getMousePosition()
     switch (event.button) {
-      case 0: // Left button
+      case 0:
         state = 'draw'
         currentLine = new Line(config.brushColor, config.brushSize)
         currentLine.addPoint(mousePos.x, mousePos.y)
         lines.push(currentLine)
         deletedLines = []
         break
-      case 1: // Middle button
+      case 1:
         state = 'pan'
         panStartX = p.mouseX
         panStartY = p.mouseY
         break
-      case 2: // Right button
+      case 2:
         state = 'zoom'
         zoomStartY = p.mouseY
         break
@@ -88,7 +112,6 @@ export const sketch = (p) => {
       const mouseX = (p.mouseX - transform.x) / transform.scale
       const mouseY = (p.mouseY - transform.y) / transform.scale
 
-      // Aplicar límites al zoom
       const minZoom = 0.1
       const maxZoom = 5
       const newScale = p.constrain(transform.scale * zoomFactor, minZoom, maxZoom)
@@ -108,17 +131,17 @@ export const sketch = (p) => {
     state = 'none'
   }
 
-  const handleMouseWheel = (event) => {
+  const handleMouseWheel = (event: WheelEvent) => {
     event.preventDefault()
     const panIntensity = 2
     transform.x -= event.deltaX * panIntensity
     transform.y -= event.deltaY * panIntensity
   }
 
-  // Setup
   p.setup = () => {
-    canvas = p.createCanvas(p.windowWidth, p.windowHeight).parent('whiteboard')
-    canvas.elt.addEventListener('contextmenu', (e) => e.preventDefault())
+    canvas = p.createCanvas(p.windowWidth, p.windowHeight)
+    canvas.parent('whiteboard')
+    canvas.elt.addEventListener('contextmenu', (e: Event) => e.preventDefault())
 
     hotkeys('command+z, ctrl+z', undo)
     hotkeys('command+shift+z, ctrl+shift+z', redo)
@@ -129,7 +152,6 @@ export const sketch = (p) => {
     canvas.mouseWheel(handleMouseWheel)
   }
 
-  // Draw
   p.draw = () => {
     p.background(config.backgroundColor)
 
@@ -143,13 +165,11 @@ export const sketch = (p) => {
     p.pop()
   }
 
-  // Resize
   p.windowResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight)
   }
 
-  // Update with props
-  p.updateWithProps = (props) => {
+  p.updateWithProps = (props: Partial<Config>) => {
     if (props.eraserColor) config.backgroundColor = props.eraserColor
     if (props.brushColor) {
       config.brushColor = props.brushColor
@@ -162,7 +182,7 @@ export const sketch = (p) => {
     if (p.key === 'c') clearCanvas()
   }
 
-  const calculateBounds = () => {
+  const calculateBounds = (): Bounds => {
     let minX = Infinity
     let minY = Infinity
     let maxX = -Infinity
@@ -185,9 +205,8 @@ export const sketch = (p) => {
     const width = maxX - minX + 200
     const height = maxY - minY + 200
 
-    let offscreenGraphics = p.createGraphics(width, height)
+    const offscreenGraphics = p.createGraphics(width, height)
     offscreenGraphics.background(config.backgroundColor)
-
     offscreenGraphics.push()
     offscreenGraphics.translate(-minX + 100, -minY + 100)
 
