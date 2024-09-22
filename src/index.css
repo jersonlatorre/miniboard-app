@@ -5,4 +5,5 @@
 html,
 body {
   @apply m-0 bg-gray-900;
+  background-color: #111;
 }
