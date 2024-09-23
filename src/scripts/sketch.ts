@@ -40,8 +40,8 @@ export const sketch = (p: p5) => {
   let currentLine: Line | null = null
   let lines: Line[] = []
   let deletedLines: Line[] = []
-  let panStartX = 0
-  let panStartY = 0
+  let panStartMouseX = 0
+  let panStartMouseY = 0
   let zoomStartY = 0
 
   let canvas: p5.Renderer
@@ -84,8 +84,8 @@ export const sketch = (p: p5) => {
         break
       case 1:
         state = 'pan'
-        panStartX = p.mouseX
-        panStartY = p.mouseY
+        panStartMouseX = p.mouseX
+        panStartMouseY = p.mouseY
         break
       case 2:
         state = 'zoom'
@@ -96,14 +96,14 @@ export const sketch = (p: p5) => {
 
   const handleMouseMoved = () => {
     if (state === 'pan' && p.mouseIsPressed) {
-      const dx = p.mouseX - panStartX
-      const dy = p.mouseY - panStartY
+      const dx = p.mouseX - panStartMouseX
+      const dy = p.mouseY - panStartMouseY
 
       transform.x += dx
       transform.y += dy
 
-      panStartX = p.mouseX
-      panStartY = p.mouseY
+      panStartMouseX = p.mouseX
+      panStartMouseY = p.mouseY
     } else if (state === 'zoom' && p.mouseIsPressed) {
       const dy = p.mouseY - zoomStartY
       const zoomIntensity = 0.005
@@ -190,10 +190,10 @@ export const sketch = (p: p5) => {
 
     lines.forEach((line) => {
       line.points.forEach((point) => {
-        if (point.x < minX) minX = point.x
-        if (point.y < minY) minY = point.y
-        if (point.x > maxX) maxX = point.x
-        if (point.y > maxY) maxY = point.y
+        minX = Math.min(minX, point.x)
+        minY = Math.min(minY, point.y)
+        maxX = Math.max(maxX, point.x)
+        maxY = Math.max(maxY, point.y)
       })
     })
 
