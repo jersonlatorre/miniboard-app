@@ -28,6 +28,16 @@ declare module 'p5' {
   }
 }
 
+const debounce = (func: (...args: unknown[]) => void) => {
+  let timeout: number | null = null
+  return (...args: unknown[]) => {
+    if (timeout) window.cancelAnimationFrame(timeout)
+    timeout = window.requestAnimationFrame(() => func(...args))
+  }
+}
+
+const MAX_HISTORY = 50
+
 export const sketch = (p: p5) => {
   const config: Config = {
     backgroundColor: '#111',
@@ -51,11 +61,19 @@ export const sketch = (p: p5) => {
     scale: 1,
   }
 
+  let lastBounds: Bounds | null = null
+  let lastLinesLength = 0
+
   const undo = (e: KeyboardEvent) => {
     e.preventDefault()
     if (lines.length > 0) {
       const lastLine = lines.pop()
-      if (lastLine) deletedLines.push(lastLine)
+      if (lastLine) {
+        deletedLines.push(lastLine)
+        if (deletedLines.length > MAX_HISTORY) {
+          deletedLines.shift()
+        }
+      }
       currentLine = null
     }
   }
@@ -94,7 +112,7 @@ export const sketch = (p: p5) => {
     }
   }
 
-  const handleMouseMoved = () => {
+  const handleMouseMoved = debounce(() => {
     if (state === 'pan' && p.mouseIsPressed) {
       const dx = p.mouseX - panStartMouseX
       const dy = p.mouseY - panStartMouseY
@@ -125,7 +143,7 @@ export const sketch = (p: p5) => {
       const mousePos = getMousePosition()
       currentLine.addPoint(mousePos.x, mousePos.y)
     }
-  }
+  })
 
   const handleMouseReleased = () => {
     state = 'none'
@@ -183,6 +201,14 @@ export const sketch = (p: p5) => {
   }
 
   const calculateBounds = (): Bounds => {
+    if (lines.length === 0) {
+      return { minX: 0, minY: 0, maxX: 0, maxY: 0 }
+    }
+
+    if (lastBounds && lastLinesLength === lines.length) {
+      return lastBounds
+    }
+
     let minX = Infinity
     let minY = Infinity
     let maxX = -Infinity
@@ -197,7 +223,9 @@ export const sketch = (p: p5) => {
       })
     })
 
-    return { minX, minY, maxX, maxY }
+    lastBounds = { minX, minY, maxX, maxY }
+    lastLinesLength = lines.length
+    return lastBounds
   }
 
   const downloadAsPNG = () => {
