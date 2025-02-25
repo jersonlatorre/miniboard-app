@@ -181,6 +181,48 @@ export const sketch = (p: p5) => {
     if (currentLine) currentLine.draw(p)
 
     p.pop()
+    
+    // comprobar si el cursor está sobre la barra de selección de colores
+    const toolbarElement = document.querySelector('ul')
+    let isOverToolbar = false
+    
+    if (toolbarElement) {
+      const rect = toolbarElement.getBoundingClientRect()
+      isOverToolbar = 
+        p.mouseX >= rect.left && 
+        p.mouseX <= rect.right && 
+        p.mouseY >= rect.top && 
+        p.mouseY <= rect.bottom
+    }
+    
+    if (!isOverToolbar) {
+      // dibujar cursor personalizado
+      p.push()
+      
+      if (config.brushColor === config.backgroundColor) {
+        // cursor para el borrador
+        p.noFill()
+        p.stroke(255) // borde blanco
+        p.strokeWeight(1) // línea más delgada
+        p.circle(p.mouseX, p.mouseY, config.brushSize)
+        p.fill(config.backgroundColor) // usar el color de fondo (#111) en lugar de negro
+        p.noStroke()
+        p.circle(p.mouseX, p.mouseY, config.brushSize - 2)
+      } else {
+        // cursor para el pincel normal
+        p.noStroke()
+        p.fill(config.brushColor)
+        p.circle(p.mouseX, p.mouseY, config.brushSize * 2)
+      }
+      
+      p.pop()
+      
+      // ocultar el cursor del sistema
+      document.body.style.cursor = 'none'
+    } else {
+      // restaurar cursor normal sobre la barra de herramientas
+      document.body.style.cursor = 'default'
+    }
   }
 
   p.windowResized = () => {
@@ -191,7 +233,7 @@ export const sketch = (p: p5) => {
     if (props.eraserColor) config.backgroundColor = props.eraserColor
     if (props.brushColor) {
       config.brushColor = props.brushColor
-      config.brushSize = config.brushColor === config.backgroundColor ? 20 : 3
+      config.brushSize = config.brushColor === config.backgroundColor ? 30 : 3
     }
   }
 
@@ -243,6 +285,7 @@ export const sketch = (p: p5) => {
     offscreenGraphics.pop()
 
     offscreenGraphics.save('dibujo_completo.png')
+    window.dispatchEvent(new CustomEvent('imageSaved'))
   }
 
   const clearCanvas = () => {

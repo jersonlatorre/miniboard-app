@@ -1,18 +1,27 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Toolbar from './components/Toolbar'
 import Whiteboard from './components/Whiteboard'
+import Toast from './components/Toast'
 import { WorkspaceProvider } from './contexts/WorkspaceContext'
 
 const App: React.FC = () => {
-  React.useEffect(() => {
+  const [showToast, setShowToast] = useState(false)
+
+  useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault()
     }
 
+    const handleImageSaved = () => {
+      setShowToast(true)
+    }
+
     document.addEventListener('wheel', handleWheel, { passive: false })
+    window.addEventListener('imageSaved', handleImageSaved)
 
     return () => {
       document.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('imageSaved', handleImageSaved)
     }
   }, [])
 
@@ -20,6 +29,12 @@ const App: React.FC = () => {
     <WorkspaceProvider>
       <Whiteboard />
       <Toolbar />
+      {showToast && (
+        <Toast
+          message="Imagen guardada exitosamente"
+          onClose={() => setShowToast(false)}
+        />
+      )}
     </WorkspaceProvider>
   )
 }
