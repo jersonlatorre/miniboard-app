@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Toolbar from './components/Toolbar'
 import Whiteboard from './components/Whiteboard'
 import Toast from './components/Toast'
 import { WorkspaceProvider } from './contexts/WorkspaceContext'
 
-const App: React.FC = () => {
+const App = () => {
   const [showToast, setShowToast] = useState(false)
 
   useEffect(() => {
@@ -29,7 +29,12 @@ const App: React.FC = () => {
     <WorkspaceProvider>
       <Whiteboard />
       <Toolbar />
-      {showToast && <Toast message="Imagen guardada exitosamente" onClose={() => setShowToast(false)} />}
+      {showToast && (
+        <Toast
+          message="Imagen guardada exitosamente"
+          onClose={() => setShowToast(false)}
+        />
+      )}
     </WorkspaceProvider>
   )
 }

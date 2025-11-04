@@ -28,6 +28,16 @@ declare module 'p5' {
   }
 }
 
+const MAX_HISTORY = 50
+const DEFAULT_BRUSH_SIZE = 3
+const ERASER_SIZE = 30
+const MIN_ZOOM = 0.1
+const MAX_ZOOM = 5
+const ZOOM_INTENSITY = 0.005
+const PAN_INTENSITY = 2
+const BOUNDS_PADDING = 200
+const BOUNDS_MARGIN = 100
+
 const debounce = (func: (...args: unknown[]) => void) => {
   let timeout: number | null = null
   return (...args: unknown[]) => {
@@ -36,12 +46,10 @@ const debounce = (func: (...args: unknown[]) => void) => {
   }
 }
 
-const MAX_HISTORY = 50
-
 export const sketch = (p: p5) => {
   const config: Config = {
     backgroundColor: '#111',
-    brushSize: 3,
+    brushSize: DEFAULT_BRUSH_SIZE,
     brushColor: '#fff',
     eraserColor: '#111',
   }
@@ -87,7 +95,10 @@ export const sketch = (p: p5) => {
   }
 
   const getMousePosition = (): p5.Vector => {
-    return p.createVector((p.mouseX - transform.x) / transform.scale, (p.mouseY - transform.y) / transform.scale)
+    return p.createVector(
+      (p.mouseX - transform.x) / transform.scale,
+      (p.mouseY - transform.y) / transform.scale
+    )
   }
 
   const handleMousePressed = (event: MouseEvent) => {
@@ -124,15 +135,12 @@ export const sketch = (p: p5) => {
       panStartMouseY = p.mouseY
     } else if (state === 'zoom' && p.mouseIsPressed) {
       const dy = p.mouseY - zoomStartY
-      const zoomIntensity = 0.005
-      const zoomFactor = Math.exp(-dy * zoomIntensity)
+      const zoomFactor = Math.exp(-dy * ZOOM_INTENSITY)
 
       const mouseX = (p.mouseX - transform.x) / transform.scale
       const mouseY = (p.mouseY - transform.y) / transform.scale
 
-      const minZoom = 0.1
-      const maxZoom = 5
-      const newScale = p.constrain(transform.scale * zoomFactor, minZoom, maxZoom)
+      const newScale = p.constrain(transform.scale * zoomFactor, MIN_ZOOM, MAX_ZOOM)
 
       transform.scale = newScale
       transform.x = p.mouseX - mouseX * transform.scale
@@ -151,9 +159,8 @@ export const sketch = (p: p5) => {
 
   const handleMouseWheel = (event: WheelEvent) => {
     event.preventDefault()
-    const panIntensity = 2
-    transform.x -= event.deltaX * panIntensity
-    transform.y -= event.deltaY * panIntensity
+    transform.x -= event.deltaX * PAN_INTENSITY
+    transform.y -= event.deltaY * PAN_INTENSITY
   }
 
   p.setup = () => {
@@ -188,7 +195,11 @@ export const sketch = (p: p5) => {
 
     if (toolbarElement) {
       const rect = toolbarElement.getBoundingClientRect()
-      isOverToolbar = p.mouseX >= rect.left && p.mouseX <= rect.right && p.mouseY >= rect.top && p.mouseY <= rect.bottom
+      isOverToolbar =
+        p.mouseX >= rect.left &&
+        p.mouseX <= rect.right &&
+        p.mouseY >= rect.top &&
+        p.mouseY <= rect.bottom
     }
 
     if (!isOverToolbar) {
@@ -229,7 +240,8 @@ export const sketch = (p: p5) => {
     if (props.eraserColor) config.backgroundColor = props.eraserColor
     if (props.brushColor) {
       config.brushColor = props.brushColor
-      config.brushSize = config.brushColor === config.backgroundColor ? 30 : 3
+      config.brushSize =
+        config.brushColor === config.backgroundColor ? ERASER_SIZE : DEFAULT_BRUSH_SIZE
     }
   }
 
@@ -268,13 +280,13 @@ export const sketch = (p: p5) => {
 
   const downloadAsPNG = () => {
     const { minX, minY, maxX, maxY } = calculateBounds()
-    const width = maxX - minX + 200
-    const height = maxY - minY + 200
+    const width = maxX - minX + BOUNDS_PADDING
+    const height = maxY - minY + BOUNDS_PADDING
 
     const offscreenGraphics = p.createGraphics(width, height)
     offscreenGraphics.background(config.backgroundColor)
     offscreenGraphics.push()
-    offscreenGraphics.translate(-minX + 100, -minY + 100)
+    offscreenGraphics.translate(-minX + BOUNDS_MARGIN, -minY + BOUNDS_MARGIN)
 
     lines.forEach((line) => line.draw(offscreenGraphics))
 

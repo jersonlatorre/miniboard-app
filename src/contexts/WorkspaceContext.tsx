@@ -1,5 +1,9 @@
 import { ReactNode, createContext, useState } from 'react'
 
+const MAIN_COLOR = '#FFFFFF'
+const ERASER_COLOR = '#111111'
+const PALETTE_COLORS = ['#FFD602', '#FF6AC1', '#1360FF']
+
 interface WorkspaceContextType {
   colors: string[]
   brushColor: string
@@ -15,18 +19,15 @@ interface WorkspaceProviderProps {
 }
 
 export const WorkspaceProvider = ({ children }: WorkspaceProviderProps) => {
-  const mainColor = '#FFFFFF'
-  const eraserColor = '#111111'
-  const colors = ['#FFD602', '#FF6AC1', '#1360FF']
-  const [brushColor, setBrushColor] = useState(mainColor)
+  const [brushColor, setBrushColor] = useState(MAIN_COLOR)
 
   return (
     <WorkspaceContext.Provider
       value={{
-        colors,
+        colors: PALETTE_COLORS,
         brushColor,
-        eraserColor,
-        mainColor,
+        eraserColor: ERASER_COLOR,
+        mainColor: MAIN_COLOR,
         setBrushColor,
       }}
     >
