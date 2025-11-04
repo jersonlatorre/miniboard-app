@@ -29,12 +29,7 @@ const App: React.FC = () => {
     <WorkspaceProvider>
       <Whiteboard />
       <Toolbar />
-      {showToast && (
-        <Toast
-          message="Imagen guardada exitosamente"
-          onClose={() => setShowToast(false)}
-        />
-      )}
+      {showToast && <Toast message="Imagen guardada exitosamente" onClose={() => setShowToast(false)} />}
     </WorkspaceProvider>
   )
 }
